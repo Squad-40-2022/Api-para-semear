@@ -14,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -46,6 +47,15 @@ public class Instituicao implements UserDetails {
 	private Endereco endereco;
 	@ManyToMany(fetch = FetchType.EAGER)
 	private List<Perfil> perfis = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "instituicao", fetch = FetchType.LAZY)
+    private List<Doacao> doacoes;
+	
+	@OneToMany(mappedBy = "instituicao", fetch = FetchType.LAZY)
+    private List<Relatorio> relatorios;
+	
+	@OneToMany(mappedBy = "colabinstituicao", fetch = FetchType.LAZY)
+    private List<Projeto> projetos;
 	
 	public Instituicao() {
 	}

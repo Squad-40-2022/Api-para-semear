@@ -14,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -41,8 +42,8 @@ public class Colaborador implements UserDetails {
 	private String email;
 	@Column(name = "senha_col", nullable = false, length = 20)
 	private String senha;
-	@Column(name = "voluntario", nullable = false)
-	private char voluntario;
+	@Column(name = "voluntario", nullable = false, length = 1)
+	private String voluntario;
 	@Column(name = "disp_col", nullable = false, length = 75)
 	private String disponibilidade;
 	@OneToOne(fetch = FetchType.LAZY)
@@ -52,12 +53,15 @@ public class Colaborador implements UserDetails {
 	private LocalDate dataNasc;
 	@ManyToMany(fetch = FetchType.EAGER)
 	private List<Perfil> perfis = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "colaborador", fetch = FetchType.LAZY)
+    private List<Doacao> doacoes;
 
 	public Colaborador() {
 	}
 
 	public Colaborador(String cpf, String nome, String sobrenome, String genero, String telefone, String email,
-			String senha, char voluntario, String disponibilidade, Endereco endereco, LocalDate dataNasc) {
+			String senha, String voluntario, String disponibilidade, Endereco endereco, LocalDate dataNasc) {
 		this.cpf = cpf;
 		this.nome = nome;
 		this.sobrenome = sobrenome;
@@ -119,10 +123,10 @@ public class Colaborador implements UserDetails {
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
-	public char getVoluntario() {
+	public String getVoluntario() {
 		return voluntario;
 	}
-	public void setVoluntario(char voluntario) {
+	public void setVoluntario(String voluntario) {
 		this.voluntario = voluntario;
 	}
 	public String getDisponibilidade() {
@@ -130,6 +134,12 @@ public class Colaborador implements UserDetails {
 	}
 	public void setDisponibilidade(String disponibilidade) {
 		this.disponibilidade = disponibilidade;
+	}
+	public List<Doacao> getDoacoes() {
+		return doacoes;
+	}
+	public void setDoacoes(List<Doacao> doacoes) {
+		this.doacoes = doacoes;
 	}
 	public Endereco getEndereco() {
 		return endereco;
@@ -176,7 +186,7 @@ public class Colaborador implements UserDetails {
 		setSenha(senha);
 		return this;
 	}
-	public Colaborador voluntario(char voluntario) {
+	public Colaborador voluntario(String voluntario) {
 		setVoluntario(voluntario);
 		return this;
 	}
@@ -192,7 +202,10 @@ public class Colaborador implements UserDetails {
 		setDataNasc(dataNasc);
 		return this;
 	}
-	
+	public Colaborador doacoes(List<Doacao> doacoes) {
+		setDoacoes(doacoes);
+		return this;
+	}
 	@Override
 	public int hashCode() {
 		return Objects.hash(cpf, dataNasc, disponibilidade, email, endereco, genero, id, nome, perfis, senha, sobrenome,
