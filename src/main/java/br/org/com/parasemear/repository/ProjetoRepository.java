@@ -1,5 +1,9 @@
 package br.org.com.parasemear.repository;
 
-public interface ProjetoRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import br.org.com.parasemear.model.Projeto;
+
+public interface ProjetoRepository extends JpaRepository<Projeto, Long>{
 
 }
