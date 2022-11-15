@@ -5,13 +5,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import br.org.com.parasemear.model.Administrador;
-import br.org.com.parasemear.model.Endereco;
 
 public class AdministradorDTO {
 
 	private long id;
-	private String cpf, nome, sobrenome, telefone, email, senha;
-	private Endereco endereco;
+	private String cpf, nome, sobrenome, telefone, email, senha, uf, cidade, bairro, logradouro, cep, numero;
 	private LocalDate dataNasc;
 	
 	public AdministradorDTO() {
@@ -24,7 +22,12 @@ public class AdministradorDTO {
 		this.telefone = adm.getTelefone();
 		this.email = adm.getEmail();
 		this.senha = adm.getSenha();
-		this.endereco = adm.getEndereco();
+		this.uf = adm.getUf();
+		this.cidade = adm.getCidade();
+		this.bairro = adm.getBairro();
+		this.logradouro = adm.getLogradouro();
+		this.cep = adm.getCep();
+		this.numero = adm.getNumero();
 		this.dataNasc = adm.getDataNasc();
 	}
 
@@ -70,11 +73,41 @@ public class AdministradorDTO {
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
-	public Endereco getEndereco() {
-		return endereco;
+	public String getUf() {
+		return uf;
 	}
-	public void setEndereco(Endereco endereco) {
-		this.endereco = endereco;
+	public void setUf(String uf) {
+		this.uf = uf;
+	}
+	public String getCidade() {
+		return cidade;
+	}
+	public void setCidade(String cidade) {
+		this.cidade = cidade;
+	}
+	public String getBairro() {
+		return bairro;
+	}
+	public void setBairro(String bairro) {
+		this.bairro = bairro;
+	}
+	public String getLogradouro() {
+		return logradouro;
+	}
+	public void setLogradouro(String logradouro) {
+		this.logradouro = logradouro;
+	}
+	public String getCep() {
+		return cep;
+	}
+	public void setCep(String cep) {
+		this.cep = cep;
+	}
+	public String getNumero() {
+		return numero;
+	}
+	public void setNumero(String numero) {
+		this.numero = numero;
 	}
 	public LocalDate getDataNasc() {
 		return dataNasc;

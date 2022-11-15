@@ -4,7 +4,7 @@ import org.springframework.security.core.Authentication;
 
 import br.org.com.parasemear.model.Instituicao;
 
-public class InstiTokenDTO {
+public class InsTokenDTO {
 
 	private long idIns;
 	private String emailIns;
@@ -13,7 +13,7 @@ public class InstiTokenDTO {
 	private String token;
 	private String tipo;
 
-	public InstiTokenDTO(String token, String tipo, Authentication authentication) {
+	public InsTokenDTO(String token, String tipo, Authentication authentication) {
 		Instituicao logado = (Instituicao) authentication.getPrincipal();
 		this.token = token;
 		this.tipo = tipo;

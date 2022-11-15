@@ -1,6 +1,5 @@
 package br.org.com.parasemear.model;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -12,13 +11,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -42,10 +37,20 @@ public class Instituicao implements UserDetails {
 	private String email;
 	@Column(name = "senha_ins", nullable = false, length = 20)
 	private String senha;
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "endereco_ins", nullable = false)
-	private Endereco endereco;
-	@ManyToMany(fetch = FetchType.EAGER)
+	@Column(name = "uf_ins", nullable = false, length = 2)
+    private String uf;
+    @Column(name = "cidade_ins", nullable = false)
+    private String cidade;
+    @Column(name = "bairro_ins", nullable = false)
+    private String bairro;
+    @Column(name = "name = logradouro_ins", nullable = false)
+    private String logradouro;
+    @Column(name = "cep_ins", nullable = false)
+    private String cep;
+    @Column(name = "numero_ins", nullable = false)
+    private String numero;
+    
+    @ManyToMany(fetch = FetchType.LAZY)
 	private List<Perfil> perfis = new ArrayList<>();
 	
 	@OneToMany(mappedBy = "instituicao", fetch = FetchType.LAZY)
@@ -54,13 +59,15 @@ public class Instituicao implements UserDetails {
 	@OneToMany(mappedBy = "instituicao", fetch = FetchType.LAZY)
     private List<Relatorio> relatorios;
 	
-	@OneToMany(mappedBy = "colabinstituicao", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "instituicao", fetch = FetchType.LAZY)
     private List<Projeto> projetos;
 	
 	public Instituicao() {
 	}
-	public Instituicao(String cnpj, String razao, String nomeFan, String nomeRes, String telefone, String email,
-			String senha, Endereco endereco) {
+	
+	public Instituicao(String cnpj, String razao, String nomeFan, String nomeRes, String telefone,
+			String email, String senha, String uf, String cidade, String bairro, String logradouro, String cep,
+			String numero) {
 		this.cnpj = cnpj;
 		this.razao = razao;
 		this.nomeFan = nomeFan;
@@ -68,7 +75,12 @@ public class Instituicao implements UserDetails {
 		this.telefone = telefone;
 		this.email = email;
 		this.senha = senha;
-		this.endereco = endereco;
+		this.uf = uf;
+		this.cidade = cidade;
+		this.bairro = bairro;
+		this.logradouro = logradouro;
+		this.cep = cep;
+		this.numero = numero;
 	}
 
 	public long getId() {
@@ -119,11 +131,53 @@ public class Instituicao implements UserDetails {
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
-	public Endereco getEndereco() {
-		return endereco;
+
+	public String getUf() {
+		return uf;
 	}
-	public void setEndereco(Endereco endereco) {
-		this.endereco = endereco;
+
+	public void setUf(String uf) {
+		this.uf = uf;
+	}
+
+	public String getCidade() {
+		return cidade;
+	}
+
+	public void setCidade(String cidade) {
+		this.cidade = cidade;
+	}
+
+	public String getBairro() {
+		return bairro;
+	}
+
+	public void setBairro(String bairro) {
+		this.bairro = bairro;
+	}
+
+	public String getLogradouro() {
+		return logradouro;
+	}
+
+	public void setLogradouro(String logradouro) {
+		this.logradouro = logradouro;
+	}
+
+	public String getCep() {
+		return cep;
+	}
+
+	public void setCep(String cep) {
+		this.cep = cep;
+	}
+
+	public String getNumero() {
+		return numero;
+	}
+
+	public void setNumero(String numero) {
+		this.numero = numero;
 	}
 
 	public Instituicao id(long id) {
@@ -154,15 +208,40 @@ public class Instituicao implements UserDetails {
 		setSenha(senha);
 		return this;
 	}
-	public Instituicao endereco(Endereco endereco) {
-		setEndereco(endereco);
+	public Instituicao uf(String uf) {
+		setUf(uf);
+		return this;
+	}
+	public Instituicao cidade(String cidade) {
+		setCidade(cidade);
+		return this;
+	}
+	public Instituicao bairro(String bairro) {
+		setBairro(bairro);
+		return this;
+	}
+	public Instituicao logradouro(String logradouro) {
+		setLogradouro(logradouro);
+		return this;
+	}
+	public Instituicao cep(String cep) {
+		setCep(cep);
+		return this;
+	}
+	public Instituicao numero(String numero) {
+		setNumero(numero);
 		return this;
 	}
 	
+	
+	
+	
 	@Override
 	public int hashCode() {
-		return Objects.hash(cnpj, email, endereco, id, nomeFan, nomeRes, perfis, razao, senha, telefone);
+		return Objects.hash(bairro, cep, cidade, cnpj, doacoes, email, id, logradouro, nomeFan, nomeRes, numero, perfis,
+				projetos, razao, relatorios, senha, telefone, uf);
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -172,12 +251,17 @@ public class Instituicao implements UserDetails {
 		if (getClass() != obj.getClass())
 			return false;
 		Instituicao other = (Instituicao) obj;
-		return Objects.equals(cnpj, other.cnpj) && Objects.equals(email, other.email)
-				&& Objects.equals(endereco, other.endereco) && id == other.id && Objects.equals(nomeFan, other.nomeFan)
-				&& Objects.equals(nomeRes, other.nomeRes) && Objects.equals(perfis, other.perfis)
-				&& Objects.equals(razao, other.razao) && Objects.equals(senha, other.senha)
-				&& Objects.equals(telefone, other.telefone);
+		return Objects.equals(bairro, other.bairro) && Objects.equals(cep, other.cep)
+				&& Objects.equals(cidade, other.cidade) && Objects.equals(cnpj, other.cnpj)
+				&& Objects.equals(doacoes, other.doacoes) && Objects.equals(email, other.email) && id == other.id
+				&& Objects.equals(logradouro, other.logradouro) && Objects.equals(nomeFan, other.nomeFan)
+				&& Objects.equals(nomeRes, other.nomeRes) && Objects.equals(numero, other.numero)
+				&& Objects.equals(perfis, other.perfis) && Objects.equals(projetos, other.projetos)
+				&& Objects.equals(razao, other.razao) && Objects.equals(relatorios, other.relatorios)
+				&& Objects.equals(senha, other.senha) && Objects.equals(telefone, other.telefone)
+				&& Objects.equals(uf, other.uf);
 	}
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return this.perfis;

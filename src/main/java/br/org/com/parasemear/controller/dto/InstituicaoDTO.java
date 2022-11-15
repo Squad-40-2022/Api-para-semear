@@ -3,14 +3,12 @@ package br.org.com.parasemear.controller.dto;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import br.org.com.parasemear.model.Endereco;
 import br.org.com.parasemear.model.Instituicao;
 
 public class InstituicaoDTO {
 
 	private long id;
-	private String cnpj, razao, nomeFan, nomeRes, telefone, email, senha;
-	private Endereco endereco;
+	private String cnpj, razao, nomeFan, nomeRes, telefone, email, senha, uf, cidade, bairro, logradouro, cep, numero;
 	
 	public InstituicaoDTO() {
 	}
@@ -23,7 +21,12 @@ public class InstituicaoDTO {
 		this.telefone = insti.getTelefone();
 		this.email = insti.getEmail();
 		this.senha = insti.getSenha();
-		this.endereco = insti.getEndereco();
+		this.uf = insti.getUf();
+		this.cidade = insti.getCidade();
+		this.bairro = insti.getBairro();
+		this.logradouro = insti.getLogradouro();
+		this.cep = insti.getCep();
+		this.numero = insti.getNumero();
 	}
 	
 	public long getId() {
@@ -74,11 +77,42 @@ public class InstituicaoDTO {
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
-	public Endereco getEndereco() {
-		return endereco;
+
+	public String getUf() {
+		return uf;
 	}
-	public void setEndereco(Endereco endereco) {
-		this.endereco = endereco;
+	public void setUf(String uf) {
+		this.uf = uf;
+	}
+	public String getCidade() {
+		return cidade;
+	}
+	public void setCidade(String cidade) {
+		this.cidade = cidade;
+	}
+	public String getBairro() {
+		return bairro;
+	}
+	public void setBairro(String bairro) {
+		this.bairro = bairro;
+	}
+	public String getLogradouro() {
+		return logradouro;
+	}
+	public void setLogradouro(String logradouro) {
+		this.logradouro = logradouro;
+	}
+	public String getCep() {
+		return cep;
+	}
+	public void setCep(String cep) {
+		this.cep = cep;
+	}
+	public String getNumero() {
+		return numero;
+	}
+	public void setNumero(String numero) {
+		this.numero = numero;
 	}
 	public static List<InstituicaoDTO> converter(List<Instituicao> insti){
 		return insti.stream().map(InstituicaoDTO::new).collect(Collectors.toList());

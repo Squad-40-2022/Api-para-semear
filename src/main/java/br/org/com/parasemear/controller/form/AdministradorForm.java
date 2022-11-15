@@ -9,7 +9,6 @@ import javax.validation.constraints.NotNull;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import br.org.com.parasemear.model.Administrador;
-import br.org.com.parasemear.model.Endereco;
 
 public class AdministradorForm {
 	@NotNull
@@ -35,7 +34,22 @@ public class AdministradorForm {
 	private String senha;
 	@NotNull
 	@NotEmpty
-	private Endereco endereco;
+	private String uf;
+	@NotNull
+	@NotEmpty
+	private String cidade;
+	@NotNull
+	@NotEmpty
+	private String bairro;
+	@NotNull
+	@NotEmpty
+	private String logradouro;
+	@NotNull
+	@NotEmpty
+	private String cep;
+	@NotNull
+	@NotEmpty
+	private String numero;
 	private LocalDate dataNasc;
 	
 	public String getCpf() {
@@ -74,11 +88,42 @@ public class AdministradorForm {
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
-	public Endereco getEndereco() {
-		return endereco;
+
+	public String getUf() {
+		return uf;
 	}
-	public void setEndereco(Endereco endereco) {
-		this.endereco = endereco;
+	public void setUf(String uf) {
+		this.uf = uf;
+	}
+	public String getCidade() {
+		return cidade;
+	}
+	public void setCidade(String cidade) {
+		this.cidade = cidade;
+	}
+	public String getBairro() {
+		return bairro;
+	}
+	public void setBairro(String bairro) {
+		this.bairro = bairro;
+	}
+	public String getLogradouro() {
+		return logradouro;
+	}
+	public void setLogradouro(String logradouro) {
+		this.logradouro = logradouro;
+	}
+	public String getCep() {
+		return cep;
+	}
+	public void setCep(String cep) {
+		this.cep = cep;
+	}
+	public String getNumero() {
+		return numero;
+	}
+	public void setNumero(String numero) {
+		this.numero = numero;
 	}
 	public LocalDate getDataNasc() {
 		return dataNasc;
@@ -92,7 +137,7 @@ public class AdministradorForm {
 	public Administrador converter(BCryptPasswordEncoder encoder) {
 
 		this.setSenha(encoder.encode(senha));
-		return new Administrador(cpf, nome, sobrenome, telefone, email, senha, endereco, dataNasc);
+		return new Administrador(cpf, nome, sobrenome, telefone, email, senha, uf, cidade, bairro, logradouro, cep, numero, dataNasc);
 	}
 
 }

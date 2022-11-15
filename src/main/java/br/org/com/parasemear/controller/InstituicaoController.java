@@ -19,10 +19,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import br.org.com.parasemear.controller.dto.AdministradorDTO;
-import br.org.com.parasemear.controller.form.AdministradorForm;
-import br.org.com.parasemear.model.Administrador;
-import br.org.com.parasemear.repository.AdministradorRepository;
+import br.org.com.parasemear.controller.dto.InstituicaoDTO;
+import br.org.com.parasemear.controller.form.InstituicaoForm;
+import br.org.com.parasemear.model.Instituicao;
+import br.org.com.parasemear.repository.InstituicaoRepository;
 
 @Controller
 @ResponseBody
@@ -30,43 +30,43 @@ import br.org.com.parasemear.repository.AdministradorRepository;
 public class InstituicaoController {
 
 	@Autowired
-	private AdministradorRepository admRepository;
+	private InstituicaoRepository insRepository;
 
 	@GetMapping("/")
-	public List<AdministradorDTO> lista() {
-		List<Administrador> adm = admRepository.findAll();
-		return AdministradorDTO.converter(adm);
+	public List<InstituicaoDTO> lista() {
+		List<Instituicao> ins = insRepository.findAll();
+		return InstituicaoDTO.converter(ins);
 	}
 
 	@GetMapping("/{id}")
-	public AdministradorDTO detalhar(@PathVariable Long id) {
-		Administrador administrador = admRepository.getReferenceById(id);
-		return new AdministradorDTO(administrador);
+	public InstituicaoDTO detalhar(@PathVariable Long id) {
+		Instituicao instituicao = insRepository.getReferenceById(id);
+		return new InstituicaoDTO(instituicao);
 	}
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> remove(@PathVariable Long id) {
 
-		admRepository.deleteById(id);
+		insRepository.deleteById(id);
 
 		return ResponseEntity.ok().build();
 	}
 
 	@PostMapping("/")
-	public ResponseEntity<AdministradorDTO> cadastrar(@RequestBody @Valid AdministradorForm form,
+	public ResponseEntity<InstituicaoDTO> cadastrar(@RequestBody @Valid InstituicaoForm form,
 			UriComponentsBuilder uriBuilder) {
 
-		Optional<Administrador> adm = admRepository.findByEmail(form.getEmail());
+		Optional<Instituicao> ins = insRepository.findByEmail(form.getEmail());
 
-		if (adm.isPresent()) {
+		if (ins.isPresent()) {
 			return ResponseEntity.badRequest().build();
 		} else {
 
 			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-			Administrador administrador = form.converter(encoder);
-			admRepository.save(administrador);
-			URI uri = uriBuilder.path("/{id}").buildAndExpand(administrador.getId()).toUri();
-			return ResponseEntity.created(uri).body(new AdministradorDTO(administrador));
+			Instituicao instituicao = form.converter(encoder);
+			insRepository.save(instituicao);
+			URI uri = uriBuilder.path("/{id}").buildAndExpand(instituicao.getId()).toUri();
+			return ResponseEntity.created(uri).body(new InstituicaoDTO(instituicao));
 		}
 
 	}

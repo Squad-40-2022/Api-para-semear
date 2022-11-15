@@ -8,5 +8,5 @@ import br.org.com.parasemear.model.Instituicao;
 
 public interface InstituicaoRepository extends JpaRepository<Instituicao, Long>{
 	Optional<Instituicao> findByEmail(String email);
-	Instituicao findByNome(String nomeIns);
+	Instituicao findByRazao(String razaoIns);
 }

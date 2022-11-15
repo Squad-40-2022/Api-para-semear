@@ -13,29 +13,35 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import br.org.com.recode.repository.ClienteRepository;
-import br.org.com.recode.repository.UserRepository;
+import br.org.com.parasemear.repository.AdministradorRepository;
+import br.org.com.parasemear.repository.ColaboradorRepository;
+import br.org.com.parasemear.repository.InstituicaoRepository;
 
 @EnableWebSecurity
 @Configuration
 public class Security extends WebSecurityConfigurerAdapter {
 
 	@Autowired
-	private AutenticacaoService autenticacaoService;
+	private AdmAutenticacaoService admAutenticacaoService;
 	@Autowired
-	private UserAutenticacaoService userAutenticacaoService;
+	private ColabAutenticacaoService colabAutenticacaoService;
+	@Autowired
+	private InsAutenticacaoService insAutenticacaoService;
 
 	@Autowired
-	private TokenService tokenService;
+	private AdmTokenService admTokenService;
 	@Autowired
-	private UserTokenService userTokenService;
+	private ColabTokenService colabTokenService;
+	@Autowired
+	private InsTokenService insTokenService;
 
 	@Autowired
-	private ClienteRepository clienteRepository;
+	private AdministradorRepository admRepository;
 	@Autowired
-	private UserRepository userRepository;
+	private ColaboradorRepository colabRepository;
+	@Autowired
+	private InstituicaoRepository insRepository;
 
 	@Override
 	@Bean
@@ -46,9 +52,11 @@ public class Security extends WebSecurityConfigurerAdapter {
 	// CONFIG AUTENTICAÇÂO
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(autenticacaoService).passwordEncoder(new BCryptPasswordEncoder());
+		auth.userDetailsService(admAutenticacaoService).passwordEncoder(new BCryptPasswordEncoder());
 
-		auth.userDetailsService(userAutenticacaoService).passwordEncoder(new BCryptPasswordEncoder());
+		auth.userDetailsService(colabAutenticacaoService).passwordEncoder(new BCryptPasswordEncoder());
+
+		auth.userDetailsService(insAutenticacaoService).passwordEncoder(new BCryptPasswordEncoder());
 	}
 
 	// CONFIG DE AUTORIZAÇÂO
@@ -67,8 +75,9 @@ public class Security extends WebSecurityConfigurerAdapter {
 		.antMatchers(HttpMethod.GET, "/user/listar").permitAll()
 		.anyRequest().authenticated()
 		.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-		.and().addFilterBefore(new AutenticacaoTokenFilter(tokenService, clienteRepository), UsernamePasswordAuthenticationFilter.class)
-		.addFilterBefore(new UserAutenticacaoTokenFilter(userTokenService, userRepository), UsernamePasswordAuthenticationFilter.class);
+		.and().addFilterBefore(new AdmTokenFilter(admTokenService, admRepository), UsernamePasswordAuthenticationFilter.class)
+		.addFilterBefore(new ColabTokenFilter(colabTokenService, colabRepository), UsernamePasswordAuthenticationFilter.class)
+		.addFilterBefore(new InsTokenFilter(insTokenService, insRepository), UsernamePasswordAuthenticationFilter.class);
 
 		
 	}

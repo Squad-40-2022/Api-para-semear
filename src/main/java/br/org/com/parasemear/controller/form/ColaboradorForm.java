@@ -9,7 +9,6 @@ import javax.validation.constraints.NotNull;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import br.org.com.parasemear.model.Colaborador;
-import br.org.com.parasemear.model.Endereco;
 
 public class ColaboradorForm {
 	@NotNull
@@ -45,7 +44,22 @@ public class ColaboradorForm {
 	private String disponibilidade;
 	@NotNull
 	@NotEmpty
-	private Endereco endereco;
+	private String uf;
+	@NotNull
+	@NotEmpty
+	private String cidade;
+	@NotNull
+	@NotEmpty
+	private String bairro;
+	@NotNull
+	@NotEmpty
+	private String logradouro;
+	@NotNull
+	@NotEmpty
+	private String cep;
+	@NotNull
+	@NotEmpty
+	private String numero;
 	private LocalDate dataNasc;
 
 	public String getCpf() {
@@ -120,12 +134,53 @@ public class ColaboradorForm {
 		this.disponibilidade = disponibilidade;
 	}
 
-	public Endereco getEndereco() {
-		return endereco;
+
+	public String getUf() {
+		return uf;
 	}
 
-	public void setEndereco(Endereco endereco) {
-		this.endereco = endereco;
+	public void setUf(String uf) {
+		this.uf = uf;
+	}
+
+	public String getCidade() {
+		return cidade;
+	}
+
+	public void setCidade(String cidade) {
+		this.cidade = cidade;
+	}
+
+	public String getBairro() {
+		return bairro;
+	}
+
+	public void setBairro(String bairro) {
+		this.bairro = bairro;
+	}
+
+	public String getLogradouro() {
+		return logradouro;
+	}
+
+	public void setLogradouro(String logradouro) {
+		this.logradouro = logradouro;
+	}
+
+	public String getCep() {
+		return cep;
+	}
+
+	public void setCep(String cep) {
+		this.cep = cep;
+	}
+
+	public String getNumero() {
+		return numero;
+	}
+
+	public void setNumero(String numero) {
+		this.numero = numero;
 	}
 
 	public LocalDate getDataNasc() {
@@ -139,8 +194,7 @@ public class ColaboradorForm {
 	public Colaborador converter(BCryptPasswordEncoder encoder) {
 
 		this.setSenha(encoder.encode(senha));
-		return new Colaborador(cpf, nome, sobrenome, genero, telefone, email, senha, voluntario, disponibilidade,
-				endereco, dataNasc);
+		return new Colaborador(cpf, nome, sobrenome, genero, telefone, email, senha, voluntario, disponibilidade, uf, cidade, bairro, logradouro, cep, numero, dataNasc);
 	}
 
 }

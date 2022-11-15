@@ -46,12 +46,21 @@ public class Colaborador implements UserDetails {
 	private String voluntario;
 	@Column(name = "disp_col", nullable = false, length = 75)
 	private String disponibilidade;
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "endereco_col", nullable = false)
-	private Endereco endereco;
+	@Column(name = "uf_col", nullable = false, length = 2)
+    private String uf;
+    @Column(name = "cidade_col", nullable = false)
+    private String cidade;
+    @Column(name = "bairro_col", nullable = false)
+    private String bairro;
+    @Column(name = "name = logradouro_col", nullable = false)
+    private String logradouro;
+    @Column(name = "cep_col", nullable = false)
+    private String cep;
+    @Column(name = "numero_col", nullable = false)
+    private String numero;
 	@DateTimeFormat(iso = ISO.DATE)
 	private LocalDate dataNasc;
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.LAZY)
 	private List<Perfil> perfis = new ArrayList<>();
 	
 	@OneToMany(mappedBy = "colaborador", fetch = FetchType.LAZY)
@@ -61,7 +70,8 @@ public class Colaborador implements UserDetails {
 	}
 
 	public Colaborador(String cpf, String nome, String sobrenome, String genero, String telefone, String email,
-			String senha, String voluntario, String disponibilidade, Endereco endereco, LocalDate dataNasc) {
+			String senha, String voluntario, String disponibilidade, String uf, String cidade, String bairro,
+			String logradouro, String cep, String numero, LocalDate dataNasc) {
 		this.cpf = cpf;
 		this.nome = nome;
 		this.sobrenome = sobrenome;
@@ -71,10 +81,14 @@ public class Colaborador implements UserDetails {
 		this.senha = senha;
 		this.voluntario = voluntario;
 		this.disponibilidade = disponibilidade;
-		this.endereco = endereco;
+		this.uf = uf;
+		this.cidade = cidade;
+		this.bairro = bairro;
+		this.logradouro = logradouro;
+		this.cep = cep;
+		this.numero = numero;
 		this.dataNasc = dataNasc;
 	}
-
 	public long getId() {
 		return id;
 	}
@@ -141,12 +155,54 @@ public class Colaborador implements UserDetails {
 	public void setDoacoes(List<Doacao> doacoes) {
 		this.doacoes = doacoes;
 	}
-	public Endereco getEndereco() {
-		return endereco;
+	public String getUf() {
+		return uf;
 	}
-	public void setEndereco(Endereco endereco) {
-		this.endereco = endereco;
+
+	public void setUf(String uf) {
+		this.uf = uf;
 	}
+
+	public String getCidade() {
+		return cidade;
+	}
+
+	public void setCidade(String cidade) {
+		this.cidade = cidade;
+	}
+
+	public String getBairro() {
+		return bairro;
+	}
+
+	public void setBairro(String bairro) {
+		this.bairro = bairro;
+	}
+
+	public String getLogradouro() {
+		return logradouro;
+	}
+
+	public void setLogradouro(String logradouro) {
+		this.logradouro = logradouro;
+	}
+
+	public String getCep() {
+		return cep;
+	}
+
+	public void setCep(String cep) {
+		this.cep = cep;
+	}
+
+	public String getNumero() {
+		return numero;
+	}
+
+	public void setNumero(String numero) {
+		this.numero = numero;
+	}
+
 	public LocalDate getDataNasc() {
 		return dataNasc;
 	}
@@ -194,8 +250,28 @@ public class Colaborador implements UserDetails {
 		setDisponibilidade(disponibilidade);
 		return this;
 	}
-	public Colaborador endereco(Endereco endereco) {
-		setEndereco(endereco);
+	public Colaborador uf(String uf) {
+		setUf(uf);
+		return this;
+	}
+	public Colaborador cidade(String cidade) {
+		setCidade(cidade);
+		return this;
+	}
+	public Colaborador bairro(String bairro) {
+		setBairro(bairro);
+		return this;
+	}
+	public Colaborador logradouro(String logradouro) {
+		setLogradouro(logradouro);
+		return this;
+	}
+	public Colaborador cep(String cep) {
+		setCep(cep);
+		return this;
+	}
+	public Colaborador numero(String numero) {
+		setNumero(numero);
 		return this;
 	}
 	public Colaborador dataNasc(LocalDate dataNasc) {
@@ -206,10 +282,11 @@ public class Colaborador implements UserDetails {
 		setDoacoes(doacoes);
 		return this;
 	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(cpf, dataNasc, disponibilidade, email, endereco, genero, id, nome, perfis, senha, sobrenome,
-				telefone, voluntario);
+		return Objects.hash(bairro, cep, cidade, cpf, dataNasc, disponibilidade, doacoes, email, genero, id, logradouro,
+				nome, numero, perfis, senha, sobrenome, telefone, uf, voluntario);
 	}
 
 	@Override
@@ -221,12 +298,16 @@ public class Colaborador implements UserDetails {
 		if (getClass() != obj.getClass())
 			return false;
 		Colaborador other = (Colaborador) obj;
-		return Objects.equals(cpf, other.cpf) && Objects.equals(dataNasc, other.dataNasc)
-				&& Objects.equals(disponibilidade, other.disponibilidade) && Objects.equals(email, other.email)
-				&& Objects.equals(endereco, other.endereco) && Objects.equals(genero, other.genero) && id == other.id
-				&& Objects.equals(nome, other.nome) && Objects.equals(perfis, other.perfis)
+		return Objects.equals(bairro, other.bairro) && Objects.equals(cep, other.cep)
+				&& Objects.equals(cidade, other.cidade) && Objects.equals(cpf, other.cpf)
+				&& Objects.equals(dataNasc, other.dataNasc) && Objects.equals(disponibilidade, other.disponibilidade)
+				&& Objects.equals(doacoes, other.doacoes) && Objects.equals(email, other.email)
+				&& Objects.equals(genero, other.genero) && id == other.id
+				&& Objects.equals(logradouro, other.logradouro) && Objects.equals(nome, other.nome)
+				&& Objects.equals(numero, other.numero) && Objects.equals(perfis, other.perfis)
 				&& Objects.equals(senha, other.senha) && Objects.equals(sobrenome, other.sobrenome)
-				&& Objects.equals(telefone, other.telefone) && voluntario == other.voluntario;
+				&& Objects.equals(telefone, other.telefone) && Objects.equals(uf, other.uf)
+				&& Objects.equals(voluntario, other.voluntario);
 	}
 
 	@Override
