@@ -18,50 +18,46 @@ import br.org.com.parasemear.repository.ProjetoRepository;
 
 @Controller
 @ResponseBody
-@RequestMapping("/instituicao")
+@RequestMapping("/adm")
 public class ProjetoController {
-
+	
 	@Autowired
-	private ProjetoRepository proRepository;
+	private ProjetoRepository conRepository;
 
-	// get all projetos
-	@GetMapping("/projetos/")
+	// get all clients
+	@GetMapping("/companhias")
 	public List<Projeto> lista() {
-		return proRepository.findAll();
+		return conRepository.findAll();
 	}
 
-	// create projeto rest api
-	@PostMapping("/projetos/")
-	public Projeto createProjeto(@RequestBody Projeto pro) {
-		return proRepository.save(pro);
+	// create client rest api
+	@PostMapping("/companhias")
+	public Projeto createCompanhia(@RequestBody Projeto con) {
+		return conRepository.save(con);
 	}
 
-	// get projeto by id rest api
-	@GetMapping("/projetos/{id}")
+	// get client by id rest api
+	@GetMapping("/companhias/{id}")
 	public Projeto detalhar(@PathVariable Long id) {
-		return proRepository.findById(id).get();
+		return conRepository.findById(id).get();
 	}
 
-	// update projeto rest api
+	// update client rest api
 
-	@PutMapping("/projetos/{id}")
-	public Projeto updateProjeto(@PathVariable Long id, @RequestBody Projeto proDetails) {
-		Projeto pro = proRepository.findById(id).get();
+	@PutMapping("/companhias/{id}")
+	public Projeto updateCompanhia(@PathVariable Long id, @RequestBody Projeto conDetails) {
+		Projeto con = conRepository.findById(id).get();
 
-		pro.setId(proDetails.getId());
-		pro.setNome(proDetails.getNome());
-		pro.setDescricao(proDetails.getDescricao());
-		pro.setQuantia(proDetails.getQuantia());
-		pro.setContemplados(proDetails.getContemplados());
-		pro.setInstituicao(proDetails.getInstituicao());
+		con.setNome(conDetails.getNome());
+		con.setCnpj(conDetails.getCnpj());
 
-		return proRepository.save(pro);
+		return conRepository.save(con);
 
 	}
 
-	// delete projeto rest api
-	@DeleteMapping("/projetos/{id}")
-	public void deleteProjeto(@PathVariable Long id) {
-		proRepository.deleteById(id);
+	// delete client rest api
+	@DeleteMapping("/companhias/{id}")
+	public void deleteCompanhia(@PathVariable Long id) {
+		conRepository.deleteById(id);
 	}
 }

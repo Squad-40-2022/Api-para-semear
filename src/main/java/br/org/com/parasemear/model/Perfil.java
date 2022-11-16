@@ -10,26 +10,32 @@ import org.springframework.security.core.GrantedAuthority;
 @Entity
 public class Perfil implements GrantedAuthority {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
-	private String nome;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private long id;
 
-	public long getId() {
-		return this.id;
-	}
-	public void setId(long id) {
-		this.id = id;
-	}
-	public String getNome() {
-		return this.nome;
-	}
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
+  private String nome;
 
-	@Override
-	public String getAuthority() {
-		return nome;
-	}
+  public long getId() {
+    return this.id;
+  }
+
+  public void setId(long id) {
+    this.id = id;
+  }
+
+  public String getNome() {
+    return this.nome;
+  }
+
+  public void setNome(String nome) {
+    this.nome = nome;
+  }
+
+  @Override
+  public String getAuthority() {
+
+    return nome;
+  }
+
 }

@@ -4,9 +4,11 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -16,28 +18,47 @@ import br.org.com.parasemear.repository.DoacaoRepository;
 
 @Controller
 @ResponseBody
-@RequestMapping("/colaborador")
+@RequestMapping("/adm")
 public class DoacaoController {
 	
 	@Autowired
-	private DoacaoRepository doaRepository;
+	private DoacaoRepository aerRepository;
 
-	// get all doacoes
-	@GetMapping("/doacoes/")
+	// get all clients
+	@GetMapping("/aeroportos/")
 	public List<Doacao> lista() {
-		return doaRepository.findAll();
+		return aerRepository.findAll();
 	}
 
-	// create doacao rest api
-	@PostMapping("/doacoes/")
-	public Doacao createDoacao(@RequestBody Doacao doa) {
-		return doaRepository.save(doa);
+	// create client rest api
+	@PostMapping("/aeroportos/")
+	public Doacao createAeroporto(@RequestBody Doacao aer) {
+		return aerRepository.save(aer);
 	}
 
-	// get doacao by id rest api
-	@GetMapping("/doacoes/{id}")
+	// get client by id rest api
+	@GetMapping("/aeroportos/{id}")
 	public Doacao detalhar(@PathVariable Long id) {
-		return doaRepository.findById(id).get();
+		return aerRepository.findById(id).get();
 	}
 
+	// update client rest api
+
+	@PutMapping("/aeroportos/{id}")
+	public Doacao updateAeroporto(@PathVariable Long id, @RequestBody Doacao aerDetails) {
+		Doacao aer = aerRepository.findById(id).get();
+
+		aer.setNome(aerDetails.getNome());
+		aer.setCnpj(aerDetails.getCnpj());
+		aer.setCidade(aerDetails.getCidade());
+
+		return aerRepository.save(aer);
+
+	}
+
+	// delete client rest api
+	@DeleteMapping("/aeroportos/{id}")
+	public void deleteAeroporto(@PathVariable Long id) {
+		aerRepository.deleteById(id);
+	}
 }

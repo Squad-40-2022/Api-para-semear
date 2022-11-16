@@ -15,15 +15,15 @@ import br.org.com.parasemear.repository.AdministradorRepository;
 public class AdmAutenticacaoService implements UserDetailsService {
 
 	@Autowired
-	private AdministradorRepository admRepository;
+	private AdministradorRepository userRepository;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-		Optional<Administrador> adm = admRepository.findByEmail(username);
-		if (adm.isPresent()) {
+		Optional<Administrador> user = userRepository.findByEmail(username);
+		if (user.isPresent()) {
 			System.out.println("AutenticacaoService Achou");
-			return adm.get();
+			return user.get();
 		}
 
 		throw new UsernameNotFoundException("DADOS INVALIDOS");

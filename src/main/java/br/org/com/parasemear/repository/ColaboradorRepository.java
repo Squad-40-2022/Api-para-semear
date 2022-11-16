@@ -8,5 +8,5 @@ import br.org.com.parasemear.model.Colaborador;
 
 public interface ColaboradorRepository extends JpaRepository<Colaborador, Long>{
 	Optional<Colaborador> findByEmail(String email);
-	Colaborador findByNome(String nomeCol);
+	Colaborador findByNome(String nomeCliente);
 }

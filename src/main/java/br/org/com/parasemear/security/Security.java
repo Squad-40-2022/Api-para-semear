@@ -16,32 +16,25 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import br.org.com.parasemear.repository.AdministradorRepository;
 import br.org.com.parasemear.repository.ColaboradorRepository;
-import br.org.com.parasemear.repository.InstituicaoRepository;
 
 @EnableWebSecurity
 @Configuration
 public class Security extends WebSecurityConfigurerAdapter {
 
 	@Autowired
-	private AdmAutenticacaoService admAutenticacaoService;
+	private ColabAutenticacaoService autenticacaoService;
 	@Autowired
-	private ColabAutenticacaoService colabAutenticacaoService;
-	@Autowired
-	private InsAutenticacaoService insAutenticacaoService;
+	private AdmAutenticacaoService userAutenticacaoService;
 
 	@Autowired
-	private AdmTokenService admTokenService;
+	private ColabTokenService tokenService;
 	@Autowired
-	private ColabTokenService colabTokenService;
-	@Autowired
-	private InsTokenService insTokenService;
+	private AdmTokenService userTokenService;
 
 	@Autowired
-	private AdministradorRepository admRepository;
+	private ColaboradorRepository clienteRepository;
 	@Autowired
-	private ColaboradorRepository colabRepository;
-	@Autowired
-	private InstituicaoRepository insRepository;
+	private AdministradorRepository userRepository;
 
 	@Override
 	@Bean
@@ -52,11 +45,9 @@ public class Security extends WebSecurityConfigurerAdapter {
 	// CONFIG AUTENTICAÇÂO
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(admAutenticacaoService).passwordEncoder(new BCryptPasswordEncoder());
+		auth.userDetailsService(autenticacaoService).passwordEncoder(new BCryptPasswordEncoder());
 
-		auth.userDetailsService(colabAutenticacaoService).passwordEncoder(new BCryptPasswordEncoder());
-
-		auth.userDetailsService(insAutenticacaoService).passwordEncoder(new BCryptPasswordEncoder());
+		auth.userDetailsService(userAutenticacaoService).passwordEncoder(new BCryptPasswordEncoder());
 	}
 
 	// CONFIG DE AUTORIZAÇÂO
@@ -75,9 +66,8 @@ public class Security extends WebSecurityConfigurerAdapter {
 		.antMatchers(HttpMethod.GET, "/user/listar").permitAll()
 		.anyRequest().authenticated()
 		.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-		.and().addFilterBefore(new AdmTokenFilter(admTokenService, admRepository), UsernamePasswordAuthenticationFilter.class)
-		.addFilterBefore(new ColabTokenFilter(colabTokenService, colabRepository), UsernamePasswordAuthenticationFilter.class)
-		.addFilterBefore(new InsTokenFilter(insTokenService, insRepository), UsernamePasswordAuthenticationFilter.class);
+		.and().addFilterBefore(new ColabAutenticacaoTokenFilter(tokenService, clienteRepository), UsernamePasswordAuthenticationFilter.class)
+		.addFilterBefore(new AdmAutenticacaoTokenFilter(userTokenService, userRepository), UsernamePasswordAuthenticationFilter.class);
 
 		
 	}

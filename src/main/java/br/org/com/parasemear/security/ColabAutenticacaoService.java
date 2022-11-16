@@ -15,15 +15,15 @@ import br.org.com.parasemear.repository.ColaboradorRepository;
 public class ColabAutenticacaoService implements UserDetailsService {
 
 	@Autowired
-	private ColaboradorRepository colRepository;
+	private ColaboradorRepository clienteRepository;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-		Optional<Colaborador> col = colRepository.findByEmail(username);
-		if (col.isPresent()) {
+		Optional<Colaborador> cliente = clienteRepository.findByEmail(username);
+		if (cliente.isPresent()) {
 			System.out.println("AutenticacaoService Achou");
-			return col.get();
+			return cliente.get();
 		}
 
 		throw new UsernameNotFoundException("DADOS INVALIDOS");

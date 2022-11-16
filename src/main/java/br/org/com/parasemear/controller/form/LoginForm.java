@@ -1,7 +1,7 @@
 package br.org.com.parasemear.controller.form;
 
 public class LoginForm {
-
+	
 	private String email;
 	private String senha;
 

@@ -17,14 +17,14 @@ import br.org.com.parasemear.controller.form.LoginForm;
 import br.org.com.parasemear.security.ColabTokenService;
 
 @RestController
-@RequestMapping("/auth/colaborador")
+@RequestMapping("/auth/colab")
 public class ColabAutenticacaoController {
 
 	@Autowired
 	private AuthenticationManager authManager;
 
 	@Autowired
-	private ColabTokenService colabTokenService;
+	private ColabTokenService tokenService;
 
 	@PostMapping
 	public ResponseEntity<?> autenticar(@RequestBody @Valid LoginForm form) {
@@ -32,20 +32,17 @@ public class ColabAutenticacaoController {
 		UsernamePasswordAuthenticationToken dadosLogin = new UsernamePasswordAuthenticationToken(form.getEmail(),
 				form.getSenha());
 		System.out.println(form.getSenha());
-		System.out.println(form.getEmail());
 		try {
 			Authentication authentication = authManager.authenticate(dadosLogin);
-			String token = colabTokenService.gerarToken(authentication);
+			String token = tokenService.gerarToken(authentication);
 			System.out.println(token);
-			System.out.println("passou aqui");
 			return ResponseEntity.ok(new ColabTokenDTO(token, "Bearer", authentication));
 
 		} catch (Exception e) {
 
-			System.out.println("user     AutenticacaoController dando ruim aqui");
+			System.out.println("AutenticacaoController dando ruim aqui");
 			return ResponseEntity.badRequest().build();
 		}
 
 	}
-
 }

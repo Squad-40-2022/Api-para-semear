@@ -8,5 +8,5 @@ import br.org.com.parasemear.model.Administrador;
 
 public interface AdministradorRepository extends JpaRepository<Administrador, Long>{
 	Optional<Administrador> findByEmail(String email);
-	Administrador findByNome(String nomeAdm);
+	Administrador findByNome(String nomeUser);
 }

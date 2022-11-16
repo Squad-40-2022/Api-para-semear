@@ -14,14 +14,15 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import br.org.com.parasemear.model.Administrador;
 import br.org.com.parasemear.repository.AdministradorRepository;
 
-public class AdmTokenFilter extends OncePerRequestFilter {
+public class AdmAutenticacaoTokenFilter extends OncePerRequestFilter {
 
-	private AdmTokenService tokenService;
-	private AdministradorRepository admRepository;
+	private AdmTokenService userTokenService;
+	private AdministradorRepository userRepository;
 
-	public AdmTokenFilter(AdmTokenService tokenService, AdministradorRepository admRepository) {
-		this.tokenService = tokenService;
-		this.admRepository = admRepository;
+	public AdmAutenticacaoTokenFilter(AdmTokenService userTokenService, AdministradorRepository userRepository) {
+
+		this.userTokenService = userTokenService;
+		this.userRepository = userRepository;
 	}
 
 	@Override
@@ -29,26 +30,28 @@ public class AdmTokenFilter extends OncePerRequestFilter {
 			throws ServletException, IOException {
 
 		String token = recuperarToken(request);
+		System.out.println("doFilter Internal" + token);
 
-		boolean valido = tokenService.isTokenValid(token);
-		System.out.println("AutenticacaoTokenFilter" + valido);
+		boolean valido = userTokenService.isTokenValid(token);
+		System.out.println("AutenticacaoTokenFilter " + valido);
 		if (valido) {
 
-			autenticarAdministrador(token);
+			autenticarUser(token);
 		}
 
 		filterChain.doFilter(request, response);
 
 	}
 
-	private void autenticarAdministrador(String token) {
+	private void autenticarUser(String token) {
 
-		Long idAdm = tokenService.getIdAdministrador(token);
+		Long idUser = userTokenService.getIdUser(token);
+		System.out.println("idUser"+idUser);
 
-		Administrador adm = admRepository.findById(idAdm).get();
+		Administrador user = userRepository.findById(idUser).get();
 
-		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(adm, null,
-				adm.getAuthorities());
+		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user, null,
+				user.getAuthorities());
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 
 	}
@@ -56,11 +59,13 @@ public class AdmTokenFilter extends OncePerRequestFilter {
 	private String recuperarToken(HttpServletRequest request) {
 
 		String token = request.getHeader("Authorization");
+		System.out.println("recuperarToken" + token);
 
 		if (token == null || token.isEmpty() || !token.startsWith("Bearer ")) {
-			System.out.println("AutenticacaoTokenFilter AQUI TBM");
+			System.out.println("USER AutenticacaoTokenFilter AQUI TBM");
 			return null;
 		} else {
+			System.out.println("substring" + token.substring(7, token.length()));
 			return token.substring(7, token.length());
 		}
 	}

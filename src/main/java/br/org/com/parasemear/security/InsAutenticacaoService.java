@@ -20,10 +20,10 @@ public class InsAutenticacaoService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-		Optional<Instituicao> ins = insRepository.findByEmail(username);
-		if (ins.isPresent()) {
+		Optional<Instituicao> cliente = insRepository.findByEmail(username);
+		if (cliente.isPresent()) {
 			System.out.println("AutenticacaoService Achou");
-			return ins.get();
+			return cliente.get();
 		}
 
 		throw new UsernameNotFoundException("DADOS INVALIDOS");

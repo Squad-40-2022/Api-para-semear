@@ -1,6 +1,7 @@
 package br.org.com.parasemear.controller;
 
 import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,14 +17,14 @@ import br.org.com.parasemear.controller.form.LoginForm;
 import br.org.com.parasemear.security.AdmTokenService;
 
 @RestController
-@RequestMapping("/auth/administrador")
+@RequestMapping("/auth/adm")
 public class AdmAutenticacaoController {
-
+	
 	@Autowired
 	private AuthenticationManager authManager;
 
 	@Autowired
-	private AdmTokenService admTokenService;
+	private AdmTokenService userTokenService;
 
 	@PostMapping
 	public ResponseEntity<?> autenticar(@RequestBody @Valid LoginForm form) {
@@ -34,7 +35,7 @@ public class AdmAutenticacaoController {
 		System.out.println(form.getEmail());
 		try {
 			Authentication authentication = authManager.authenticate(dadosLogin);
-			String token = admTokenService.gerarToken(authentication);
+			String token = userTokenService.gerarToken(authentication);
 			System.out.println(token);
 			System.out.println("passou aqui");
 			return ResponseEntity.ok(new AdmTokenDTO(token, "Bearer", authentication));
@@ -46,5 +47,4 @@ public class AdmAutenticacaoController {
 		}
 
 	}
-
 }

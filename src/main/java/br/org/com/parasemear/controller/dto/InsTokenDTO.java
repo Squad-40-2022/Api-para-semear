@@ -2,37 +2,26 @@ package br.org.com.parasemear.controller.dto;
 
 import org.springframework.security.core.Authentication;
 
-import br.org.com.parasemear.model.Instituicao;
+import br.org.com.parasemear.model.Colaborador;
 
 public class InsTokenDTO {
 
-	private long idIns;
-	private String emailIns;
-	private String nomeIns;
+	private Long idUser;
+	private String emailUser;
+	private String nomeUser;
 
 	private String token;
 	private String tipo;
 
 	public InsTokenDTO(String token, String tipo, Authentication authentication) {
-		Instituicao logado = (Instituicao) authentication.getPrincipal();
+		Colaborador logado = (Colaborador) authentication.getPrincipal();
 		this.token = token;
 		this.tipo = tipo;
 
-		this.idIns = logado.getId();
-		this.emailIns = logado.getEmail();
-		this.nomeIns = logado.getRazao();
-	}
+		this.idUser = logado.getId();
+		this.emailUser = logado.getEmail();
+		this.nomeUser = logado.getNome();
 
-	public long getIdIns() {
-		return this.idIns;
-	}
-
-	public String getEmailIns() {
-		return this.emailIns;
-	}
-
-	public String getNomeIns() {
-		return this.nomeIns;
 	}
 
 	public String getToken() {
@@ -43,4 +32,15 @@ public class InsTokenDTO {
 		return this.tipo;
 	}
 
+	public Long getIdUser() {
+		return this.idUser;
+	}
+
+	public String getEmailUser() {
+		return this.emailUser;
+	}
+
+	public String getNomeUser() {
+		return this.nomeUser;
+	}
 }

@@ -28,47 +28,46 @@ import br.org.com.parasemear.repository.AdministradorRepository;
 @ResponseBody
 @RequestMapping("/adm")
 public class AdministradorController {
-
+	
 	@Autowired
-	private AdministradorRepository admRepository;
+	private AdministradorRepository userRepository;
 
-	@GetMapping("/")
+	@GetMapping("/user/")
 	public List<AdministradorDTO> lista() {
-		List<Administrador> adm = admRepository.findAll();
-		return AdministradorDTO.converter(adm);
+		List<Administrador> users = userRepository.findAll();
+		return AdministradorDTO.converter(users);
 	}
 
-	@GetMapping("/{id}")
+	@GetMapping("/user/{id}")
 	public AdministradorDTO detalhar(@PathVariable Long id) {
-		Administrador administrador = admRepository.getReferenceById(id);
-		return new AdministradorDTO(administrador);
+		Administrador user = userRepository.getReferenceById(id);
+		return new AdministradorDTO(user);
 	}
 
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/user/{id}")
 	public ResponseEntity<?> remove(@PathVariable Long id) {
 
-		admRepository.deleteById(id);
+		userRepository.deleteById(id);
 
 		return ResponseEntity.ok().build();
 	}
 
-	@PostMapping("/")
-	public ResponseEntity<AdministradorDTO> cadastrar(@RequestBody @Valid AdministradorForm form,
-			UriComponentsBuilder uriBuilder) {
+	@PostMapping("/user/")
+	public ResponseEntity<AdministradorDTO> cadastrar(@RequestBody @Valid AdministradorForm form, UriComponentsBuilder uriBuilder) {
 
-		Optional<Administrador> adm = admRepository.findByEmail(form.getEmail());
+		Optional<Administrador> users = userRepository.findByEmail(form.getEmail());
 
-		if (adm.isPresent()) {
+		if (users.isPresent()) {
 			return ResponseEntity.badRequest().build();
 		} else {
 
 			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-			Administrador administrador = form.converter(encoder);
-			admRepository.save(administrador);
-			URI uri = uriBuilder.path("/{id}").buildAndExpand(administrador.getId()).toUri();
-			return ResponseEntity.created(uri).body(new AdministradorDTO(administrador));
+			Administrador user = form.converter(encoder);
+			userRepository.save(user);
+			URI uri = uriBuilder.path("/user/{id}").buildAndExpand(user.getId()).toUri();
+			return ResponseEntity.created(uri).body(new AdministradorDTO(user));
 		}
+		
 
 	}
-
 }

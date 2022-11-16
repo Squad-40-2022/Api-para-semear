@@ -18,51 +18,68 @@ import br.org.com.parasemear.repository.RelatorioRepository;
 
 @Controller
 @ResponseBody
-@RequestMapping("/instituicao")
+@RequestMapping("/adm")
 public class RelatorioController {
-
+	
 	@Autowired
-	private RelatorioRepository relRepository;
+	private RelatorioRepository hosRepository;
 
-	// get all relatorios
-	@GetMapping("/relatorios/")
+	// get all clients
+	@GetMapping("/hospedagens/")
 	public List<Relatorio> lista() {
-		return relRepository.findAll();
+		return hosRepository.findAll();
+	}
+	
+//	@GetMapping("/imagem/{id}")
+//	@ResponseBody
+//	public byte[] exibirImagen(@PathVariable("id") Long id) {
+//		Hospedagem hospedagem = this.hosRepository.getOne(id);
+//		return hospedagem.getImagem();
+//	}
+	
+
+	// create client rest api
+	@PostMapping("/hospedagens/")
+	public Relatorio createHospedagem(@RequestBody Relatorio hos) {
+//		, @RequestParam("fileCliente") MultipartFile file
+//		try {
+//			hos.setImagem(file.getBytes());
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+		return hosRepository.save(hos);
 	}
 
-	// create relatorio rest api
-	@PostMapping("/relatorios/")
-	public Relatorio createRelatorio(@RequestBody Relatorio rel) {
-		return relRepository.save(rel);
-	}
-
-	// get relatorio by id rest api
-	@GetMapping("/relatorios/{id}")
+	// get client by id rest api
+	@GetMapping("/hospedagens/{id}")
 	public Relatorio detalhar(@PathVariable Long id) {
-		return relRepository.findById(id).get();
+		return hosRepository.findById(id).get();
 	}
 
-	// update relatorio rest api
+	// update client rest api
 
-	@PutMapping("/relatorios/{id}")
-	public Relatorio updateRelatorio(@PathVariable Long id, @RequestBody Relatorio relDetails) {
-		Relatorio rel = relRepository.findById(id).get();
+	@PutMapping("/hospedagens/{id}")
+	public Relatorio updateHospedagem(@PathVariable Long id, @RequestBody Relatorio hosDetails) {
+		Relatorio hos = hosRepository.findById(id).get();
 
-		rel.setMes(relDetails.getDescricao());
-		rel.setDescricao(relDetails.getDescricao());
-		rel.setQuantia(relDetails.getQuantia());
-		rel.setContemplados(relDetails.getContemplados());
-		rel.setProjetos(relDetails.getProjetos());
-		rel.setVoluntarios(relDetails.getVoluntarios());
-		rel.setInstituicao(relDetails.getInstituicao());
+		hos.setNome(hosDetails.getNome());
+		hos.setCnpj(hosDetails.getCnpj());
+		hos.setTipo(hosDetails.getTipo());
+		hos.setCidade(hosDetails.getCidade());
+		hos.setPreco_dia(hosDetails.getPreco_dia());
+		hos.setDesconto(hosDetails.getDesconto());
 
-		return relRepository.save(rel);
+		return hosRepository.save(hos);
 
 	}
 
-	// delete relatorio rest api
-	@DeleteMapping("/relatorios/{id}")
-	public void deleteRelatorio(@PathVariable Long id) {
-		relRepository.deleteById(id);
+	// delete client rest api
+	@DeleteMapping("/hospedagens/{id}")
+	public void deleteHospedagem(@PathVariable Long id) {
+		hosRepository.deleteById(id);
 	}
+	
+	
+
+	
 }

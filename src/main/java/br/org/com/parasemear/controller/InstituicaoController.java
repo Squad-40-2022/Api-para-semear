@@ -28,48 +28,45 @@ import br.org.com.parasemear.repository.InstituicaoRepository;
 @ResponseBody
 @RequestMapping("/instituicao")
 public class InstituicaoController {
-
+	
 	@Autowired
-	private InstituicaoRepository insRepository;
-
+	private InstituicaoRepository clienteRepository;
+	
 	@GetMapping("/")
-	public List<InstituicaoDTO> lista() {
-		List<Instituicao> ins = insRepository.findAll();
-		return InstituicaoDTO.converter(ins);
-	}
+	  public List<InstituicaoDTO> lista() {
+	    List<Instituicao> cli = clienteRepository.findAll();
+	    return InstituicaoDTO.converter(cli);
+	  }
 
-	@GetMapping("/{id}")
-	public InstituicaoDTO detalhar(@PathVariable Long id) {
-		Instituicao instituicao = insRepository.getReferenceById(id);
-		return new InstituicaoDTO(instituicao);
-	}
+	  @GetMapping("/{id}")
+	  public InstituicaoDTO detalhar(@PathVariable Long id) {
+		  Instituicao cliente = clienteRepository.getReferenceById(id);
+	    return new InstituicaoDTO(cliente);
+	  }
 
-	@DeleteMapping("/{id}")
-	public ResponseEntity<?> remove(@PathVariable Long id) {
+	  @DeleteMapping("/{id}")
+	  public ResponseEntity<?> remove(@PathVariable Long id) {
 
-		insRepository.deleteById(id);
+	    clienteRepository.deleteById(id);
 
-		return ResponseEntity.ok().build();
-	}
+	    return ResponseEntity.ok().build();
+	  }
 
-	@PostMapping("/")
-	public ResponseEntity<InstituicaoDTO> cadastrar(@RequestBody @Valid InstituicaoForm form,
-			UriComponentsBuilder uriBuilder) {
+	  @PostMapping("/")
+	  public ResponseEntity<InstituicaoDTO> cadastrar(@RequestBody @Valid InstituicaoForm form, UriComponentsBuilder uriBuilder) {
 
-		Optional<Instituicao> ins = insRepository.findByEmail(form.getEmail());
+	    Optional<Instituicao> cli = clienteRepository.findByEmail(form.getEmail());
 
-		if (ins.isPresent()) {
-			return ResponseEntity.badRequest().build();
-		} else {
+	    if (cli.isPresent()) {
+	      return ResponseEntity.badRequest().build();
+	    } else {
 
-			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-			Instituicao instituicao = form.converter(encoder);
-			insRepository.save(instituicao);
-			URI uri = uriBuilder.path("/{id}").buildAndExpand(instituicao.getId()).toUri();
-			return ResponseEntity.created(uri).body(new InstituicaoDTO(instituicao));
-		}
+	      BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+	      Instituicao cliente = form.converter(encoder);
+	      clienteRepository.save(cliente);
+	      URI uri = uriBuilder.path("/{id}").buildAndExpand(cliente.getId()).toUri();
+	      return ResponseEntity.created(uri).body(new InstituicaoDTO(cliente));
+	    }
 
-	}
-
-
+	  }
 }
