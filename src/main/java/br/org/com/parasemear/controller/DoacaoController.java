@@ -18,47 +18,50 @@ import br.org.com.parasemear.repository.DoacaoRepository;
 
 @Controller
 @ResponseBody
-@RequestMapping("/adm")
+@RequestMapping("/colaborador/doacao")
 public class DoacaoController {
 	
 	@Autowired
-	private DoacaoRepository aerRepository;
+	private DoacaoRepository doaRepository;
 
 	// get all clients
-	@GetMapping("/aeroportos/")
+	@GetMapping("/")
 	public List<Doacao> lista() {
-		return aerRepository.findAll();
+		return doaRepository.findAll();
 	}
 
 	// create client rest api
-	@PostMapping("/aeroportos/")
-	public Doacao createAeroporto(@RequestBody Doacao aer) {
-		return aerRepository.save(aer);
+	@PostMapping("/")
+	public Doacao createDoacao(@RequestBody Doacao doa) {
+		return doaRepository.save(doa);
 	}
 
 	// get client by id rest api
-	@GetMapping("/aeroportos/{id}")
+	@GetMapping("/{id}")
 	public Doacao detalhar(@PathVariable Long id) {
-		return aerRepository.findById(id).get();
+		return doaRepository.findById(id).get();
 	}
 
 	// update client rest api
 
-	@PutMapping("/aeroportos/{id}")
-	public Doacao updateAeroporto(@PathVariable Long id, @RequestBody Doacao aerDetails) {
-		Doacao aer = aerRepository.findById(id).get();
+	@PutMapping("/{id}")
+	public Doacao updateDoacao(@PathVariable Long id, @RequestBody Doacao doaDetails) {
+		Doacao doa = doaRepository.findById(id).get();
 
-		aer.setNome(aerDetails.getNome());
-		aer.setCnpj(aerDetails.getCnpj());
-		aer.setCidade(aerDetails.getCidade());
+		
+		doa.setAnonimo(doaDetails.getAnonimo());
+		doa.setData(doaDetails.getData());
+		doa.setDescricao(doaDetails.getDescricao());
+		doa.setQuantia(doaDetails.getQuantia());
+		doa.setTipo(doaDetails.getTipo());
 
-		return aerRepository.save(aer);
+		return doaRepository.save(doa);
 
 	}
 
 	// delete client rest api
-	@DeleteMapping("/aeroportos/{id}")
-	public void deleteAeroporto(@PathVariable Long id) {
-		aerRepository.deleteById(id);
+	@DeleteMapping("/{id}")
+	public void deleteDoacao(@PathVariable Long id) {
+		doaRepository.deleteById(id);
 	}
 }

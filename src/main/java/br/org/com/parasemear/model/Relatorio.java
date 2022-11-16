@@ -1,89 +1,109 @@
 package br.org.com.parasemear.model;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
+
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.NumberFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
+import org.springframework.format.annotation.NumberFormat.Style;
 
 @Entity
 public class Relatorio {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	private String cnpj, nome, tipo, cidade;
-	private double preco_dia, desconto;
-//	@Lob
-//	private byte[] imagem;
-	
+
+	private String mes;
+
+	private String descricao;
+
+	@NumberFormat(style = Style.CURRENCY, pattern = "#,##0.00")
+	private BigDecimal quantia;
+
+	private long voluntarios;
+
+	private long contemplados;
+
 	public Relatorio() {
 	}
-	public Relatorio(long id, String cnpj, String nome, String tipo, String cidade, double preco_dia, double desconto) {
+
+	public Relatorio(long id, String mes, String descricao, BigDecimal quantia, long voluntarios, long contemplados) {
 		this.id = id;
-		this.cnpj = cnpj;
-		this.nome = nome;
-		this.tipo = tipo;
-		this.cidade = cidade;
-		this.preco_dia = preco_dia;
-		this.desconto = desconto;
+		this.mes = mes;
+		this.descricao = descricao;
+		this.quantia = quantia;
+		this.voluntarios = voluntarios;
+		this.contemplados = contemplados;
 	}
-	
+
 	public long getId() {
 		return id;
 	}
+
 	public void setId(long id) {
 		this.id = id;
 	}
-	public String getCnpj() {
-		return cnpj;
+
+	public String getMes() {
+		return mes;
 	}
-	public void setCnpj(String cnpj) {
-		this.cnpj = cnpj;
+
+	public void setMes(String mes) {
+		this.mes = mes;
 	}
-	public String getNome() {
-		return nome;
+
+	public String getDescricao() {
+		return descricao;
 	}
-	public void setNome(String nome) {
-		this.nome = nome;
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
-	public String getTipo() {
-		return tipo;
+
+	public BigDecimal getQuantia() {
+		return quantia;
 	}
-	public void setTipo(String tipo) {
-		this.tipo = tipo;
+
+	public void setQuantia(BigDecimal quantia) {
+		this.quantia = quantia;
 	}
-	public String getCidade() {
-		return cidade;
+
+	public long getVoluntarios() {
+		return voluntarios;
 	}
-	public void setCidade(String cidade) {
-		this.cidade = cidade;
+
+	public void setVoluntarios(long voluntarios) {
+		this.voluntarios = voluntarios;
 	}
-	public double getPreco_dia() {
-		return preco_dia;
+
+	public long getContemplados() {
+		return contemplados;
 	}
-	public void setPreco_dia(double preco_dia) {
-		this.preco_dia = preco_dia;
+
+	public void setContemplados(long contemplados) {
+		this.contemplados = contemplados;
 	}
-	public double getDesconto() {
-		return desconto;
-	}
-	public void setDesconto(double desconto) {
-		this.desconto = desconto;
-	}
-//	public byte[] getImagem() {
-//		return imagem;
-//	}
-//	public void setImagem(byte[] imagem) {
-//		this.imagem = imagem;
-//	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(cidade, cnpj, desconto, id, nome, preco_dia, tipo);
+		return Objects.hash(contemplados, descricao, id, mes, quantia, voluntarios);
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -93,10 +113,9 @@ public class Relatorio {
 		if (getClass() != obj.getClass())
 			return false;
 		Relatorio other = (Relatorio) obj;
-		return Objects.equals(cidade, other.cidade) && Objects.equals(cnpj, other.cnpj)
-				&& Double.doubleToLongBits(desconto) == Double.doubleToLongBits(other.desconto) && id == other.id
-				&& Objects.equals(nome, other.nome)
-				&& Double.doubleToLongBits(preco_dia) == Double.doubleToLongBits(other.preco_dia)
-				&& Objects.equals(tipo, other.tipo);
+		return contemplados == other.contemplados && Objects.equals(descricao, other.descricao) && id == other.id
+				&& Objects.equals(mes, other.mes) && Objects.equals(quantia, other.quantia)
+				&& voluntarios == other.voluntarios;
 	}
+
 }

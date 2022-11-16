@@ -1,5 +1,7 @@
 package br.org.com.parasemear.model;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Objects;
 
 import javax.persistence.Entity;
@@ -7,52 +9,94 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.NumberFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
+import org.springframework.format.annotation.NumberFormat.Style;
+
 @Entity
 public class Doacao {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	private String cnpj, nome, cidade;
-	
+
+	private String tipo;
+
+	@DateTimeFormat(iso = ISO.DATE)
+	private LocalDate data;
+
+	private String descricao;
+
+	@NumberFormat(style = Style.CURRENCY, pattern = "#,##0.00")
+	private BigDecimal quantia;
+
+	private String anonimo;
+
 	public Doacao() {
 	}
-	public Doacao(long id, String cnpj, String nome, String cidade) {
-		this.id = id;
-		this.cnpj = cnpj;
-		this.nome = nome;
-		this.cidade = cidade;
+
+	public Doacao(String tipo, LocalDate data, String descricao, BigDecimal quantia, String anonimo) {
+		this.tipo = tipo;
+		this.data = data;
+		this.descricao = descricao;
+		this.quantia = quantia;
+		this.anonimo = anonimo;
 	}
 
 	public long getId() {
 		return id;
 	}
+
 	public void setId(long id) {
 		this.id = id;
 	}
-	public String getCnpj() {
-		return cnpj;
+
+	public String getTipo() {
+		return tipo;
 	}
-	public void setCnpj(String cnpj) {
-		this.cnpj = cnpj;
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
 	}
-	public String getNome() {
-		return nome;
+
+	public LocalDate getData() {
+		return data;
 	}
-	public void setNome(String nome) {
-		this.nome = nome;
+
+	public void setData(LocalDate data) {
+		this.data = data;
 	}
-	public String getCidade() {
-		return cidade;
+
+	public String getDescricao() {
+		return descricao;
 	}
-	public void setCidade(String cidade) {
-		this.cidade = cidade;
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
-	
+
+	public BigDecimal getQuantia() {
+		return quantia;
+	}
+
+	public void setQuantia(BigDecimal quantia) {
+		this.quantia = quantia;
+	}
+
+	public String getAnonimo() {
+		return anonimo;
+	}
+
+	public void setAnonimo(String anonimo) {
+		this.anonimo = anonimo;
+	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(cidade, cnpj, id, nome);
+		return Objects.hash(anonimo, data, descricao, id, quantia, tipo);
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -62,7 +106,8 @@ public class Doacao {
 		if (getClass() != obj.getClass())
 			return false;
 		Doacao other = (Doacao) obj;
-		return Objects.equals(cidade, other.cidade) && Objects.equals(cnpj, other.cnpj) && id == other.id
-				&& Objects.equals(nome, other.nome);
+		return Objects.equals(anonimo, other.anonimo) && Objects.equals(data, other.data)
+				&& Objects.equals(descricao, other.descricao) && id == other.id
+				&& Objects.equals(quantia, other.quantia) && Objects.equals(tipo, other.tipo);
 	}
 }

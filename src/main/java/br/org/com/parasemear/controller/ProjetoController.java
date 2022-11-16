@@ -18,46 +18,43 @@ import br.org.com.parasemear.repository.ProjetoRepository;
 
 @Controller
 @ResponseBody
-@RequestMapping("/adm")
+@RequestMapping("/instituicao/projeto")
 public class ProjetoController {
 	
 	@Autowired
-	private ProjetoRepository conRepository;
+	private ProjetoRepository proRepository;
 
-	// get all clients
-	@GetMapping("/companhias")
+	@GetMapping("/")
 	public List<Projeto> lista() {
-		return conRepository.findAll();
+		return proRepository.findAll();
 	}
 
-	// create client rest api
-	@PostMapping("/companhias")
-	public Projeto createCompanhia(@RequestBody Projeto con) {
-		return conRepository.save(con);
+	@PostMapping("/")
+	public Projeto createProjeto(@RequestBody Projeto pro) {
+		return proRepository.save(pro);
 	}
 
-	// get client by id rest api
-	@GetMapping("/companhias/{id}")
+	@GetMapping("/{id}")
 	public Projeto detalhar(@PathVariable Long id) {
-		return conRepository.findById(id).get();
+		return proRepository.findById(id).get();
 	}
 
-	// update client rest api
+	@PutMapping("/{id}")
+	public Projeto updateProjeto(@PathVariable Long id, @RequestBody Projeto proDetails) {
+		Projeto pro = proRepository.findById(id).get();
 
-	@PutMapping("/companhias/{id}")
-	public Projeto updateCompanhia(@PathVariable Long id, @RequestBody Projeto conDetails) {
-		Projeto con = conRepository.findById(id).get();
+		pro.setAtivo(proDetails.getAtivo());
+		pro.setContemplados(proDetails.getContemplados());
+		pro.setDescricao(proDetails.getDescricao());
+		pro.setNome(proDetails.getNome());
+		pro.setQuantia(proDetails.getQuantia());
 
-		con.setNome(conDetails.getNome());
-		con.setCnpj(conDetails.getCnpj());
-
-		return conRepository.save(con);
+		return proRepository.save(pro);
 
 	}
 
-	// delete client rest api
-	@DeleteMapping("/companhias/{id}")
-	public void deleteCompanhia(@PathVariable Long id) {
-		conRepository.deleteById(id);
+	@DeleteMapping("/{id}")
+	public void deleteProjeto(@PathVariable Long id) {
+		proRepository.deleteById(id);
 	}
 }

@@ -18,65 +18,44 @@ import br.org.com.parasemear.repository.RelatorioRepository;
 
 @Controller
 @ResponseBody
-@RequestMapping("/adm")
+@RequestMapping("/instituicao/relatorio")
 public class RelatorioController {
 	
 	@Autowired
-	private RelatorioRepository hosRepository;
+	private RelatorioRepository relRepository;
 
-	// get all clients
-	@GetMapping("/hospedagens/")
+	@GetMapping("/")
 	public List<Relatorio> lista() {
-		return hosRepository.findAll();
+		return relRepository.findAll();
 	}
 	
-//	@GetMapping("/imagem/{id}")
-//	@ResponseBody
-//	public byte[] exibirImagen(@PathVariable("id") Long id) {
-//		Hospedagem hospedagem = this.hosRepository.getOne(id);
-//		return hospedagem.getImagem();
-//	}
-	
-
-	// create client rest api
-	@PostMapping("/hospedagens/")
-	public Relatorio createHospedagem(@RequestBody Relatorio hos) {
-//		, @RequestParam("fileCliente") MultipartFile file
-//		try {
-//			hos.setImagem(file.getBytes());
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-		return hosRepository.save(hos);
+	@PostMapping("/")
+	public Relatorio createRelatorio(@RequestBody Relatorio rel) {
+		return relRepository.save(rel);
 	}
 
-	// get client by id rest api
-	@GetMapping("/hospedagens/{id}")
+	@GetMapping("/{id}")
 	public Relatorio detalhar(@PathVariable Long id) {
-		return hosRepository.findById(id).get();
+		return relRepository.findById(id).get();
 	}
 
-	// update client rest api
+	@PutMapping("/{id}")
+	public Relatorio updateRelatorio(@PathVariable Long id, @RequestBody Relatorio relDetails) {
+		Relatorio rel = relRepository.findById(id).get();
 
-	@PutMapping("/hospedagens/{id}")
-	public Relatorio updateHospedagem(@PathVariable Long id, @RequestBody Relatorio hosDetails) {
-		Relatorio hos = hosRepository.findById(id).get();
+		rel.setContemplados(relDetails.getContemplados());
+		rel.setDescricao(relDetails.getDescricao());
+		rel.setMes(relDetails.getMes());
+		rel.setQuantia(relDetails.getQuantia());
+		rel.setVoluntarios(relDetails.getVoluntarios());
 
-		hos.setNome(hosDetails.getNome());
-		hos.setCnpj(hosDetails.getCnpj());
-		hos.setTipo(hosDetails.getTipo());
-		hos.setCidade(hosDetails.getCidade());
-		hos.setPreco_dia(hosDetails.getPreco_dia());
-		hos.setDesconto(hosDetails.getDesconto());
-
-		return hosRepository.save(hos);
+		return relRepository.save(rel);
 
 	}
 
-	// delete client rest api
 	@DeleteMapping("/hospedagens/{id}")
-	public void deleteHospedagem(@PathVariable Long id) {
-		hosRepository.deleteById(id);
+	public void deleteRelatorio(@PathVariable Long id) {
+		relRepository.deleteById(id);
 	}
 	
 	
