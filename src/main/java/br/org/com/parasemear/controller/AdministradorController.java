@@ -32,13 +32,13 @@ public class AdministradorController {
 	@Autowired
 	private AdministradorRepository userRepository;
 
-	@GetMapping("/user/")
+	@GetMapping("/")
 	public List<AdministradorDTO> lista() {
 		List<Administrador> users = userRepository.findAll();
 		return AdministradorDTO.converter(users);
 	}
 
-	@GetMapping("/user/{id}")
+	@GetMapping("/{id}")
 	public AdministradorDTO detalhar(@PathVariable Long id) {
 		Administrador user = userRepository.getReferenceById(id);
 		return new AdministradorDTO(user);
@@ -52,7 +52,7 @@ public class AdministradorController {
 		return ResponseEntity.ok().build();
 	}
 
-	@PostMapping("/user/")
+	@PostMapping("/")
 	public ResponseEntity<AdministradorDTO> cadastrar(@RequestBody @Valid AdministradorForm form, UriComponentsBuilder uriBuilder) {
 
 		Optional<Administrador> users = userRepository.findByEmail(form.getEmail());
